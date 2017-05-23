@@ -1,0 +1,38 @@
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://192.168.1.240:3306/cqck_db
+    username: root
+    password: 111111
+    driver-class-name: com.mysql.jdbc.Driver
+  jpa:
+    database: mysql
+    show-sql: false
+    hibernate:
+      ddl-auto: none
+      naming:
+        strategy: org.hibernate.cfg.ImprovedNamingStrategy
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+  mvc:
+    throw-exception-if-no-handler-found: true
+  resources:
+    add-mappings: false
+
+#融宝相关配置
+reapal:
+  url: http://testapi.reapal.com
+  merchantId: 100000000000147
+  appKey: g0be2385657fa355af68b74e9913a1320af82gb7ae5f580g79bffd04a402ba8f
+  seller_email: 850138237@qq.com
+  pubKeyUrl: /data/cert/rongbao_test.cer
+  privateKey: /data/cert/rongbao_test.pfx
+  privateKeyPwd: 123456
+notify:
+  url: http://114.55.69.217:7776
+jww:
+  url: http://192.168.1.8:9999
+
+
+

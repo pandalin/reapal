@@ -1,0 +1,229 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.jvv.reapal</groupId>
+    <artifactId>jinvovo-reapal</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>reapal-model</module>
+        <module>reapal-dao</module>
+        <module>reapal-service</module>
+        <module>reapal-common</module>
+        <module>reapal-web</module>
+        <module>reapal-core</module>
+        <module>reapal-test</module>
+        <module>reapal-facade</module>
+        <module>reapal-integration</module>
+        <module>reapal-notify</module>
+        <module>reapal-provider</module>
+        <module>reapal-timer</module>
+    </modules>
+    <packaging>pom</packaging>
+
+    <name>jinvovo-reapal</name>
+    <url>http://maven.apache.org</url>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.4.5.RELEASE</version>
+    </parent>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <reapal.version>1.0-SNAPSHOT</reapal.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.jvv.reapal</groupId>
+                <artifactId>reapal-common</artifactId>
+                <version>${reapal.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.jvv.reapal</groupId>
+                <artifactId>reapal-core</artifactId>
+                <version>${reapal.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.jvv.reapal</groupId>
+                <artifactId>reapal-dao</artifactId>
+                <version>${reapal.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.jvv.reapal</groupId>
+                <artifactId>reapal-facade</artifactId>
+                <version>${reapal.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.jvv.reapal</groupId>
+                <artifactId>reapal-integration</artifactId>
+                <version>${reapal.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.jvv.reapal</groupId>
+                <artifactId>reapal-model</artifactId>
+                <version>${reapal.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.jvv.reapal</groupId>
+                <artifactId>reapal-notify</artifactId>
+                <version>${reapal.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.jvv.reapal</groupId>
+                <artifactId>reapal-provider</artifactId>
+                <version>${reapal.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.jvv.reapal</groupId>
+                <artifactId>reapal-service</artifactId>
+                <version>${reapal.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.jvv.reapal</groupId>
+                <artifactId>reapal-test</artifactId>
+                <version>${reapal.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.jvv.reapal</groupId>
+                <artifactId>reapal-timer</artifactId>
+                <version>${reapal.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.jvv.reapal</groupId>
+                <artifactId>reapal-web</artifactId>
+                <version>${reapal.version}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>1.0.28</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.31</version>
+        </dependency>
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk15</artifactId>
+            <version>1.45</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.groovy.modules.http-builder</groupId>
+            <artifactId>http-builder</artifactId>
+            <version>0.7.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.5</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>20.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+        </dependency>
+        <!--<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>-->
+    </dependencies>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>compile</id>
+                            <phase>compile</phase>
+                            <goals>
+                                <goal>run</goal>
+                            </goals>
+                            <configuration>
+                                <target>
+                                    <mkdir dir="${basedir}\src\main\java\" />
+                                    <taskdef classname="org.codehaus.groovy.ant.Groovyc" name="groovyc">
+                                        <classpath refid="maven.compile.classpath" />
+                                    </taskdef>
+                                    <mkdir dir="${project.build.outputDirectory}" />
+                                    <groovyc destdir="${project.build.outputDirectory}" srcdir="${basedir}\src\main\java\">
+                                        <classpath refid="maven.compile.classpath" />
+                                    </groovyc>
+                                </target>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <configuration>
+                        <failOnMissingWebXml>false</failOnMissingWebXml>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+</project>

@@ -1,0 +1,35 @@
+package com.jvv.reapal.common.utils
+
+import groovyx.net.http.ContentType
+import groovyx.net.http.HTTPBuilder
+import groovyx.net.http.Method
+import org.springframework.http.MediaType
+
+/**
+ * Created by IntelliJ IDEA
+ * <p>〈类详细描述〉 </p>
+ * 〈功能详细描述〉
+ *
+ * @author linxm
+ * @date 2017/5/11
+ * @time 15:31
+ * @version 1.0
+ */
+class HttpBuilder {
+
+    static http = new HTTPBuilder()
+
+    static String post(url,Map<String,String> params) {
+
+        http.request( url, Method.POST, ContentType.TEXT ) { req ->
+            uri.query = params
+            headers.Accept = MediaType.APPLICATION_JSON_UTF8_VALUE
+            response.success = { resp, reader ->
+                return reader.text
+            }
+            response.'404' = {
+                println 'Not found'
+            }
+        }
+    }
+}
