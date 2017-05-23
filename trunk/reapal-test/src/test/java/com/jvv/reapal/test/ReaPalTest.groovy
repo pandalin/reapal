@@ -46,8 +46,8 @@ class ReaPalTest {
 //        params.put("validthru","0420")
         params.put("terminal_type","mobile")
         params.put("bg_ret_url","http://192.168.1.207:9898/notify/test")
-//        params.put("order_no",DateFormatUtils.format(DateTime.now().toDate(),"yyyyMMddSSS") + RandomStringUtils.randomNumeric(9))
-        params.put("order_no","CQ591add06b58e20-64483030")
+        params.put("order_no",DateFormatUtils.format(DateTime.now().toDate(),"yyyyMMddSSS") + RandomStringUtils.randomNumeric(9))
+//        params.put("order_no","CQ591add06b58e20-64483030")
         get("/reapal/debitCardSign")
     }
 
