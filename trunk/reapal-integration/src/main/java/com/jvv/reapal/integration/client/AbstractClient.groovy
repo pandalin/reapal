@@ -24,14 +24,18 @@ import org.springframework.beans.factory.annotation.Value
 @Slf4j
 abstract class AbstractClient {
 
+    @Value('${reapal.version}')
+    private String version
     @Value('${reapal.merchantId}')
     private String merchantId
     @Value('${reapal.seller_email}')
     private String seller_email
     @Value('${reapal.appKey}')
     private String appKey
-    @Value('${reapal.url}')
-    private String baseUrl
+    @Value('${reapal.pay-url}')
+    private String payUrl
+    @Value('${reapal.topay-url}')
+    private String toPayUrl
     @Value('${reapal.pubKeyUrl}')
     private String pubKeyUrl
     @Value('${reapal.privateKey}')
@@ -54,7 +58,12 @@ abstract class AbstractClient {
     protected static final String URL_ORDER_SEARCH = "/fast/search"
 
     protected static final String URL_JWW_USER_REALNAME = "/m/getUserRealNameState"
+    protected static final String URL_JWW_USER_CERTNO = "/m/getUserByCertNo"
     protected static final String URL_UPDATE_JWW_USER_REALNAME = "/m/updateUserRealNameState"
+
+
+    protected static final String URL_BATCHTOPAY = "/agentpay/pay"
+    protected static final String URL_TOPAY_NOTIFY = "/notify/batchToPay"
 
     String getSeller_email() {
         return seller_email
@@ -66,6 +75,25 @@ abstract class AbstractClient {
 
     String getMerchantId() {
         return merchantId
+    }
+
+    public <T> T batchToPay(AbstractDTO abstractDTO, Class<T> respClass) {
+
+        Map<String, String> requestMap = BeanUtils.describe(abstractDTO)
+        requestMap.remove("class")
+        requestMap.remove("metaClass")
+        String sign = ReaPalSignUtils.buildSign(requestMap, appKey)
+
+        requestMap.put(ApiConstants.SIGN, sign)
+        requestMap.put(ApiConstants.SIGN_TYPE, ApiConstants.MD5)
+        String json = JSON.toJSONString(requestMap)
+        log.info("===================>批量代付请求参数,{}",json)
+        Map<String, String> maps = Decipher.encryptData(json, pubKeyUrl)
+        maps.put("merchant_id",merchantId)
+        maps.put("version",version)
+        String returnStr = post(toPayUrl + URL_BATCHTOPAY, maps)
+        String data = Decipher.decryptData(returnStr, privateKey, privateKeyPwd)
+        return JSON.parseObject(data, respClass)
     }
 
     public <T> T reaPal(String url, AbstractDTO abstractDTO, Class<T> respClass) {
@@ -83,9 +111,16 @@ abstract class AbstractClient {
         log.info("===================>请求参数,{}",json)
         Map<String, String> maps = Decipher.encryptData(json, pubKeyUrl)
         maps.put("merchant_id",merchantId)
-        String returnStr = post(baseUrl + url, maps)
+        String returnStr = post(payUrl + url, maps)
         String data = Decipher.decryptData(returnStr, privateKey, privateKeyPwd)
         return JSON.parseObject(data, respClass)
+    }
+
+    public <T> T getJwwUserByCertNo(String cardNo,String userId, Class<T> respClass) {
+        Map<String, String> requestMap = Maps.newHashMap()
+        requestMap.put("certNo", cardNo)
+        requestMap.put("userId", userId)
+        return post(jwwUrl + URL_JWW_USER_CERTNO, requestMap,respClass)
     }
 
     public <T> T getJwwUserInfo(String userId, Class<T> respClass) {

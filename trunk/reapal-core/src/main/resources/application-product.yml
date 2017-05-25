@@ -22,7 +22,9 @@ spring:
 
 #融宝相关配置
 reapal:
-  url: http://api.reapal.com
+  version: 1.0
+  pay-url: http://api.reapal.com
+  topay-url: http://agentpay.reapal.com/agentpay
   merchantId: 100000001301356
   appKey: 2a8e9cab468abe859f8c1adfd1b63a2dcdcd05b3152a50g0a37e323b97df7835
   seller_email: 893448785@qq.com

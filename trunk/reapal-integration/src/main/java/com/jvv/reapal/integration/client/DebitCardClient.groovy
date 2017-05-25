@@ -1,5 +1,6 @@
 package com.jvv.reapal.integration.client
 
+import com.jvv.reapal.common.utils.DateUtils
 import com.jvv.reapal.common.utils.StringUtils
 import com.jvv.reapal.integration.dto.DebitCardDTO
 import com.jvv.reapal.integration.dto.DebitCardSignDTO
@@ -33,7 +34,7 @@ class DebitCardClient extends AbstractClient{
         debitCardDTO.seller_email = getSeller_email()
         debitCardDTO.notify_url = getNotifyUrl() + URL_PAY_NOTIFY
         debitCardDTO.token_id = StringUtils.getUUId()
-        debitCardDTO.transtime = DateFormatUtils.format(DateTime.now().toDate(),DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.pattern + " " + DateFormatUtils.ISO_8601_EXTENDED_TIME_FORMAT.pattern)
+        debitCardDTO.transtime = DateUtils.currentStr()
         debitCardDTO.terminal_info = RandomStringUtils.randomNumeric(15) + "_" + RandomStringUtils.random(10,'abcdefghigklmnopqrstuvwxyz')
     }
 

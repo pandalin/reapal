@@ -1,12 +1,10 @@
 package com.jvv.reapal.web.controller
 
 import com.jvv.reapal.facade.api.ReaPalFacadeApi
+import com.jvv.reapal.facade.info.BankCardInfo
 import com.jvv.reapal.facade.info.ConfirmPayInfo
 import com.jvv.reapal.facade.info.DebitCardInfo
-import com.jvv.reapal.facade.req.ConfirmPayReq
-import com.jvv.reapal.facade.req.DebitCardReq
-import com.jvv.reapal.facade.req.SendSmsReq
-import com.jvv.reapal.facade.req.UnBindCardReq
+import com.jvv.reapal.facade.req.*
 import com.jvv.reapal.facade.result.BizResult
 import com.jvv.reapal.facade.result.SimpleResult
 import org.springframework.http.HttpStatus
@@ -83,6 +81,12 @@ class ReaPalController extends AbstractReaPalController{
     ResponseEntity<SimpleResult> unBindCard(UnBindCardReq unBindCardReq) {
         SimpleResult result = reaPalFacadeApi.unbindCard(unBindCardReq)
         return new ResponseEntity<SimpleResult>(result,HttpStatus.OK)
+    }
+
+    @RequestMapping("/reapal/getBindCard")
+    ResponseEntity<BizResult<BankCardInfo>> unBindCard(GetBankCardReq getBankCardReq) {
+        BizResult<BankCardInfo> result = reaPalFacadeApi.getBindCard(getBankCardReq)
+        return new ResponseEntity<BizResult<BankCardInfo>>(result,HttpStatus.OK)
     }
 
 }

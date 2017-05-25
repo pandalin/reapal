@@ -1,5 +1,6 @@
 package com.jvv.reapal.service
 
+import com.jvv.reapal.facade.info.BankCardInfo
 import com.jvv.reapal.facade.info.ConfirmPayInfo
 import com.jvv.reapal.facade.info.DebitCardInfo
 import com.jvv.reapal.facade.result.BizResult
@@ -7,7 +8,6 @@ import com.jvv.reapal.facade.result.SimpleResult
 import com.jvv.reapal.integration.dto.ConfirmPayDTO
 import com.jvv.reapal.integration.dto.ConfirmPayNotifyDTO
 import com.jvv.reapal.integration.dto.DebitCardDTO
-import com.jvv.reapal.model.entity.DebitCard
 import com.jvv.reapal.model.entity.DebitCardOrder
 
 /**
@@ -43,4 +43,7 @@ interface ReaPalService {
     DebitCardOrder saveDebitCardOrder(DebitCardOrder debitCardOrder)
 
     SimpleResult unBindCard(String bank_id,String member_id)
+
+    BizResult<BankCardInfo> getBindCard(String member_id)
+
 }

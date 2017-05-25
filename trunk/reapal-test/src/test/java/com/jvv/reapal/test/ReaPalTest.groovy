@@ -1,9 +1,15 @@
 package com.jvv.reapal.test
 
+import com.alibaba.fastjson.JSON
+import com.alibaba.fastjson.JSONArray
 import com.google.common.collect.Lists
 import com.google.common.collect.Maps
 import com.jvv.reapal.common.utils.HttpBuilder
+import com.jvv.reapal.facade.req.BatchToPayDetailReq
 import org.apache.commons.codec.digest.DigestUtils
+import org.apache.commons.lang3.RandomStringUtils
+import org.apache.commons.lang3.time.DateFormatUtils
+import org.joda.time.DateTime
 import org.junit.Before
 import org.junit.Test
 
@@ -62,6 +68,13 @@ class ReaPalTest {
     }
 
     @Test
+    void getBindCard() {
+        String memberId = "afe2dda6-39eb-11e7-8393-6c92bf3160a3"
+        params.put("member_id",memberId)
+        get("/reapal/getBindCard")
+    }
+
+    @Test
     void sendSms() {
         String orderNo = "20170512579905677358"
         String memberId = "12345"
@@ -77,6 +90,79 @@ class ReaPalTest {
         params.put("bank_id",bank_id)
         params.put("member_id",memberId)
         get("/reapal/unBindCard")
+    }
+
+    @Test
+    void batchToPay() {
+        List<BatchToPayDetailReq> list = Lists.newArrayList()
+
+
+        BatchToPayDetailReq req = new BatchToPayDetailReq()
+        req.bank_no = '111111111'
+        req.bank_name="农业银行"
+        req.order_no = "30000000000003"
+//        req.account_name = "张三"
+        req.phone="18375693021"
+//        req.cert_no = "500234198412231155"
+//        req.certificate = "身份证"
+        req.remark="测试提现11"
+        req.money = 10
+        req.member_id = "0000da8d-1e28-11e5-8f47-ecf4bbd34484"
+        req.bg_ret_url = "http://192.168.1.207:88/notify/test"
+        list.add(req)
+
+        req = new BatchToPayDetailReq()
+        req.bank_no = '2222222222'
+        req.bank_name="建设银行"
+        req.order_no = "30000000000004"
+//        req.account_name = "李四"
+        req.phone="18375693022"
+//        req.cert_no = "500234198412231156"
+//        req.certificate = "身份证"
+        req.remark="测试提现22"
+        req.money = 20
+        req.member_id = "00014b01-2572-11e5-8f47-ecf4bbd34484"
+        req.bg_ret_url = "http://192.168.1.207:88/notify/test"
+        list.add(req)
+
+        String str = JSON.toJSONString(list)
+        println HttpBuilder.postJson(URL + "/reapal/batchToPay",str)
+    }
+
+    @Test
+    void test() {
+        /*BatchToPayDetailReq req = new BatchToPayDetailReq()
+        req.bank_name = '1231231'
+        List<BatchToPayDetailReq> list = Lists.newArrayList()
+        list.add(req)
+
+        String str = JSON.toJSONString(list)
+        println str
+        List<BatchToPayDetailReq> jsonArray = JSON.parse(str)
+        println jsonArray.get(0).bank_name*/
+
+
+        List<String> l = Lists.newArrayList()
+        l.add("aa")
+        l.add("bb")
+        l.add("cc")
+        l.eachWithIndex {it,i->
+            if (it.is("bb")) {
+                return "2222"
+            }
+            println it + "--" +i
+        }
+
+        def b = false
+        for (it in l) {
+            if (it.is("bb")) {
+                b = true
+                break
+            }
+        }
+        if (b) {
+            println "======="
+        }
     }
 
     def initParams() {

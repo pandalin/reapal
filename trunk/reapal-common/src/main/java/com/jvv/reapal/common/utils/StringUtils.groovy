@@ -13,7 +13,7 @@ package com.jvv.reapal.common.utils
 class StringUtils {
 
     static String hideCardNo(String card_no) {
-        return card_no.substring(0,4) + "****" + card_no.substring(card_no.length() - 4,card_no.length())
+        return card_no.substring(0,4) + " **** **** " + card_no.substring(card_no.length() - 4,card_no.length())
     }
 
     static String getUUId() {

@@ -32,4 +32,15 @@ class HttpBuilder {
             }
         }
     }
+
+    static String postJson(url,jsonStr) {
+        http.request( url, Method.POST, ContentType.JSON ) {
+            headers.'Content-Type' = 'application/json'
+            requestContentType = ContentType.JSON
+            body = jsonStr
+            response.success = { resp, json ->
+                return json
+            }
+        }
+    }
 }

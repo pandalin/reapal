@@ -34,6 +34,7 @@ class ReaPalConfigurer extends WebMvcConfigurerAdapter{
     void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(headInterceptor).addPathPatterns("/**")
         registry.addInterceptor(signInterceptor).addPathPatterns("/reapal/**")
+                                                .excludePathPatterns("/reapal/batchToPay")
     }
 
     @Override

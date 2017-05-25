@@ -2,9 +2,11 @@ package com.jvv.reapal.service.impl
 
 import com.alibaba.fastjson.JSON
 import com.jvv.reapal.common.utils.IdCardUtils
+import com.jvv.reapal.common.utils.StringUtils
 import com.jvv.reapal.dao.DebitCardDao
 import com.jvv.reapal.dao.DebitCardOrderDao
 import com.jvv.reapal.dao.ReaPalUserDao
+import com.jvv.reapal.facade.info.BankCardInfo
 import com.jvv.reapal.facade.info.ConfirmPayInfo
 import com.jvv.reapal.facade.info.DebitCardInfo
 import com.jvv.reapal.facade.result.BizResult
@@ -16,16 +18,12 @@ import com.jvv.reapal.integration.client.SmsClient
 import com.jvv.reapal.integration.dto.ConfirmPayDTO
 import com.jvv.reapal.integration.dto.ConfirmPayNotifyDTO
 import com.jvv.reapal.integration.dto.DebitCardDTO
-import com.jvv.reapal.integration.resp.ConfirmPayResp
-import com.jvv.reapal.integration.resp.DebitCardResp
-import com.jvv.reapal.integration.resp.JwwUserResp
-import com.jvv.reapal.integration.resp.SmsResp
-import com.jvv.reapal.integration.resp.UnBindCardResp
+import com.jvv.reapal.integration.resp.*
 import com.jvv.reapal.model.entity.DebitCard
 import com.jvv.reapal.model.entity.DebitCardOrder
+import com.jvv.reapal.model.entity.ReaPalUser
 import com.jvv.reapal.model.enums.OrderNotifyStatus
 import com.jvv.reapal.model.enums.OrderStatus
-import com.jvv.reapal.model.entity.ReaPalUser
 import com.jvv.reapal.service.NotifyService
 import com.jvv.reapal.service.ReaPalService
 import org.codehaus.groovy.runtime.InvokerHelper
@@ -114,6 +112,20 @@ class ReaPalServiceImpl implements ReaPalService {
     }
 
     @Override
+    BizResult<BankCardInfo> getBindCard(String member_id) {
+        BizResult<BankCardInfo> result = new BizResult<BankCardInfo>()
+        DebitCard debitCard = debitCardDao.findDebitCardByMemberId(member_id)
+        Assert.notNull(debitCard,"未绑定银行卡")
+
+        BankCardInfo bankCardInfo = new BankCardInfo()
+        InvokerHelper.setProperties(bankCardInfo,debitCard.properties)
+        bankCardInfo.card_no = StringUtils.hideCardNo(bankCardInfo.card_no)
+        result.data = bankCardInfo
+        result.setToSuccess()
+        return result
+    }
+
+    @Override
     SimpleResult sendSms(String order_no, String member_id) {
 
         SimpleResult result = new SimpleResult()
@@ -142,7 +154,7 @@ class ReaPalServiceImpl implements ReaPalService {
     SimpleResult confirmPayNotify(ConfirmPayNotifyDTO confirmPayNotifyDTO) {
         SimpleResult result = new SimpleResult()
         String decryData = confirmPayClient.decryptData(confirmPayNotifyDTO.encryptkey,confirmPayNotifyDTO.data)
-        ConfirmPayResp confirmPayResp = JSON.parseObject(decryData,ConfirmPayResp.class);
+        ConfirmPayResp confirmPayResp = JSON.parseObject(decryData,ConfirmPayResp.class)
         DebitCardOrder debitCardOrder = debitCardOrderDao.getDebitCardOrderByOrderNoAndTradeNo(confirmPayResp.order_no,confirmPayResp.trade_no)
         if (debitCardOrder != null) {
             debitCardOrder.close_date_time = confirmPayResp.close_date_time
@@ -220,10 +232,9 @@ class ReaPalServiceImpl implements ReaPalService {
     BizResult<DebitCardInfo> bindCard(DebitCardDTO debitCardDTO) {
         BizResult<DebitCardInfo> result = new BizResult<DebitCardInfo>()
 
-        DebitCard userDebitCard = debitCardDao.findDebitCardByCardNoAndMemberId(debitCardDTO.getCard_no(),debitCardDTO.getMember_id())
+        DebitCard userDebitCard = debitCardDao.findDebitCardByCardNoAndMemberId(debitCardDTO.card_no,debitCardDTO.member_id)
         if (userDebitCard == null) {
-
-            JwwUserResp jwwUserResp = debitCardClient.getJwwUserInfo(debitCardDTO.member_id,JwwUserResp.class)
+            JwwUserResp jwwUserResp = debitCardClient.getJwwUserByCertNo(debitCardDTO.cert_no,debitCardDTO.member_id,JwwUserResp.class)
             if (jwwUserResp.success()) {
                 if (jwwUserResp.realNameState()) {
                     if (!debitCardDTO.owner.equals(jwwUserResp.realName) || !debitCardDTO.cert_no.equals(jwwUserResp.cert_no)) {
@@ -237,10 +248,9 @@ class ReaPalServiceImpl implements ReaPalService {
                     }
                 }
             } else {
-                result.setToFail(CommonResultCode.NET_EXCEPRION,CommonResultCode.NET_EXCEPRION.message)
+                result.setToFail(CommonResultCode.BIZ_EXCEPRION,jwwUserResp.result_msg)
                 return result
             }
-
             DebitCardResp debitCardResp = debitCardClient.bindCard(debitCardDTO)
             if (debitCardResp.success()) {
 

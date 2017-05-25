@@ -1,12 +1,9 @@
 package com.jvv.reapal.facade.api
 
+import com.jvv.reapal.facade.info.BankCardInfo
 import com.jvv.reapal.facade.info.ConfirmPayInfo
 import com.jvv.reapal.facade.info.DebitCardInfo
-import com.jvv.reapal.facade.req.ConfirmPayNotifyReq
-import com.jvv.reapal.facade.req.ConfirmPayReq
-import com.jvv.reapal.facade.req.DebitCardReq
-import com.jvv.reapal.facade.req.SendSmsReq
-import com.jvv.reapal.facade.req.UnBindCardReq
+import com.jvv.reapal.facade.req.*
 import com.jvv.reapal.facade.result.BizResult
 import com.jvv.reapal.facade.result.SimpleResult
 
@@ -30,7 +27,13 @@ interface ReaPalFacadeApi {
 
     BizResult<ConfirmPayInfo> confirmPay(ConfirmPayReq confirmPayReq)
 
-    SimpleResult confirmPayNotify(ConfirmPayNotifyReq confirmPayNotifyReq)
+    SimpleResult confirmPayNotify(ReaPalNotifyReq confirmPayNotifyReq)
 
     SimpleResult sendSms(SendSmsReq sendSmsReq)
+
+    BizResult<BankCardInfo> getBindCard(GetBankCardReq getBankCardReq)
+
+    SimpleResult batchToPay(List<BatchToPayDetailReq> detailReqList)
+
+    SimpleResult batchToPayNotify(ReaPalNotifyReq reaPalNotifyReq)
 }

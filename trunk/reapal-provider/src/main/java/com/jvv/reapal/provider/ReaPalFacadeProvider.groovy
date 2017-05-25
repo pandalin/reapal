@@ -3,18 +3,16 @@ package com.jvv.reapal.provider
 import com.jvv.reapal.facade.api.ReaPalFacadeApi
 import com.jvv.reapal.facade.constants.Add
 import com.jvv.reapal.facade.constants.Modify
+import com.jvv.reapal.facade.info.BankCardInfo
 import com.jvv.reapal.facade.info.ConfirmPayInfo
 import com.jvv.reapal.facade.info.DebitCardInfo
-import com.jvv.reapal.facade.req.ConfirmPayNotifyReq
-import com.jvv.reapal.facade.req.ConfirmPayReq
-import com.jvv.reapal.facade.req.DebitCardReq
-import com.jvv.reapal.facade.req.SendSmsReq
-import com.jvv.reapal.facade.req.UnBindCardReq
+import com.jvv.reapal.facade.req.*
 import com.jvv.reapal.facade.result.BizResult
 import com.jvv.reapal.facade.result.SimpleResult
 import com.jvv.reapal.integration.dto.ConfirmPayDTO
 import com.jvv.reapal.integration.dto.ConfirmPayNotifyDTO
 import com.jvv.reapal.integration.dto.DebitCardDTO
+import com.jvv.reapal.service.BatchToPayService
 import com.jvv.reapal.service.ReaPalService
 import org.codehaus.groovy.runtime.InvokerHelper
 import org.springframework.stereotype.Component
@@ -37,6 +35,8 @@ class ReaPalFacadeProvider extends AbstractProvider implements ReaPalFacadeApi {
 
     @Resource
     private ReaPalService reaPalService
+    @Resource
+    private BatchToPayService batchToPayService
 
     @Override
     BizResult<DebitCardInfo> bindCard(DebitCardReq debitCardReq) {
@@ -69,7 +69,7 @@ class ReaPalFacadeProvider extends AbstractProvider implements ReaPalFacadeApi {
     }
 
     @Override
-    SimpleResult confirmPayNotify(ConfirmPayNotifyReq confirmPayNotifyReq) {
+    SimpleResult confirmPayNotify(ReaPalNotifyReq confirmPayNotifyReq) {
         ConfirmPayNotifyDTO confirmPayNotifyDTO = new ConfirmPayNotifyDTO()
         InvokerHelper.setProperties(confirmPayNotifyDTO,confirmPayNotifyReq.properties)
         return reaPalService.confirmPayNotify(confirmPayNotifyDTO)
@@ -77,6 +77,26 @@ class ReaPalFacadeProvider extends AbstractProvider implements ReaPalFacadeApi {
 
     @Override
     SimpleResult sendSms(SendSmsReq sendSmsReq) {
+        check(sendSmsReq)
         return reaPalService.sendSms(sendSmsReq.order_no,sendSmsReq.member_id)
+    }
+
+    @Override
+    BizResult<BankCardInfo> getBindCard(GetBankCardReq getBankCardReq) {
+        check(getBankCardReq)
+        return reaPalService.getBindCard(getBankCardReq.member_id)
+    }
+
+    @Override
+    SimpleResult batchToPay(List<BatchToPayDetailReq> detailReqList) {
+        detailReqList.each {check(it)}
+        return batchToPayService.batchToPay(detailReqList)
+    }
+
+    @Override
+    SimpleResult batchToPayNotify(ReaPalNotifyReq reaPalNotifyReq) {
+        ConfirmPayNotifyDTO confirmPayNotifyDTO = new ConfirmPayNotifyDTO()
+        InvokerHelper.setProperties(confirmPayNotifyDTO,reaPalNotifyReq.properties)
+        return batchToPayService.batchToPayNotify(confirmPayNotifyDTO)
     }
 }

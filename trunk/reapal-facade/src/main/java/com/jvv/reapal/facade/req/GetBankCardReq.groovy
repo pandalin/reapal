@@ -8,14 +8,12 @@ import org.hibernate.validator.constraints.NotEmpty
  * 〈功能详细描述〉
  *
  * @author linxm
- * @date 2017/5/9
- * @time 9:18
+ * @date 2017/5/23
+ * @time 16:39
  * @version 1.0
  */
-class SendSmsReq extends AbstractReq{
+class GetBankCardReq extends AbstractReq{
 
-    @NotEmpty(message = "订单号不能为空")
-    String order_no
-    @NotEmpty(message = "会员号不能为空")
+    @NotEmpty(message = "会员ID不能为空")
     String member_id
 }

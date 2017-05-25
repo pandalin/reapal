@@ -10,7 +10,7 @@ package com.jvv.reapal.facade.req
  * @time 18:38
  * @version 1.0
  */
-class ConfirmPayNotifyReq implements Serializable{
+class ReaPalNotifyReq implements Serializable{
 
     String merchant_id
     String data

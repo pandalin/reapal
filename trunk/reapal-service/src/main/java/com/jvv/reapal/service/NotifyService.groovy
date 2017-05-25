@@ -1,5 +1,7 @@
 package com.jvv.reapal.service
 
+import com.jvv.reapal.model.entity.BatchToPay
+import com.jvv.reapal.model.entity.BatchToPayDetail
 import com.jvv.reapal.model.entity.DebitCardOrder
 
 /**
@@ -17,4 +19,6 @@ interface NotifyService {
     void notifyOrder(DebitCardOrder debitCardOrder)
 
     def notifyJwwUserRealNameState(String userId, String realName, String cert_no)
+
+    def notifyBatchToPay(BatchToPay batchToPay, BatchToPayDetail batchToPayDetail)
 }
