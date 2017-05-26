@@ -120,6 +120,7 @@ class ReaPalServiceImpl implements ReaPalService {
         BankCardInfo bankCardInfo = new BankCardInfo()
         InvokerHelper.setProperties(bankCardInfo,debitCard.properties)
         bankCardInfo.card_no = StringUtils.hideCardNo(bankCardInfo.card_no)
+        bankCardInfo.bank_id = debitCard.id
         result.data = bankCardInfo
         result.setToSuccess()
         return result
