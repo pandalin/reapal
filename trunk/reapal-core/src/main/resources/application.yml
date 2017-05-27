@@ -2,4 +2,4 @@ server:
   port: 88
 spring:
   profiles:
-    active: test
+    active: dev

@@ -1,7 +1,6 @@
 package com.jvv.reapal.core.config
 
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler
-import org.springframework.aop.interceptor.SimpleAsyncUncaughtExceptionHandler
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.scheduling.annotation.AsyncConfigurer
@@ -30,7 +29,7 @@ import java.util.concurrent.ThreadPoolExecutor
 class ReaPalTaskExecutor implements AsyncConfigurer,SchedulingConfigurer{
 
     @Bean
-    public ThreadPoolTaskScheduler taskScheduler(){
+    ThreadPoolTaskScheduler taskScheduler(){
         ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler()
         scheduler.poolSize = 20
         scheduler.threadNamePrefix = "task-"
@@ -48,7 +47,7 @@ class ReaPalTaskExecutor implements AsyncConfigurer,SchedulingConfigurer{
 
     @Override
     AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
-        return new SimpleAsyncUncaughtExceptionHandler()
+        return new ReaPalAsyncUncaughtExceptionHandler()
     }
 
     @Override
