@@ -39,23 +39,25 @@ class BatchToPayNotifyTask {
     @Resource
     private BatchToPayService batchToPayService
 
-    @Scheduled(cron = "0 0 12/23 * * ?")
+    /**
+     * 每6小时执行1次
+     */
+    @Scheduled(cron = "0 0 */6 * * ?")
     def batchToPayNotify() {
         log.info("===================通知长青定时任务开始执行===================")
         List<BatchToPayDetail> unNotifyList = batchToPayDetailDao.findBatchToPayDetailUnNotify()
         if (CollectionUtils.isNotEmpty(unNotifyList)) {
-            log.info("===================待通知订单数量,{}===================",unNotifyList.size())
             for (it in unNotifyList) {
                 BatchToPay batchToPay = batchToPayDao.findOne(it.pay_id)
-                log.info("===================>订单号,{}",it.order_no)
+                log.info("===================>通知订单号,{}",it.order_no)
                 notifyService.notifyBatchToPay(batchToPay,it)
             }
         }
     }
 
-    @Scheduled(cron = "0 0 12/23 * * ?")
+    @Scheduled(cron = "0 0 */2 * * ?")
     def batchToPaySearch() {
-        log.info("===================批量提现未获取融宝定时任务开始执行===================")
+        log.info("===================融宝提现未返回状态定时任务开始执行===================")
         List<BatchToPayDetail> unReturnList = batchToPayDetailDao.findBatchToPayDetailUnReturn()
         if (CollectionUtils.isNotEmpty(unReturnList)) {
             for (it in unReturnList) {

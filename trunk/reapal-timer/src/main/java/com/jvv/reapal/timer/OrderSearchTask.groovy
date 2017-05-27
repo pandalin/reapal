@@ -34,11 +34,10 @@ class OrderSearchTask {
 
     @Scheduled(cron = "0 0/5 * * * ?")
     def searchOrder() {
-
+        log.info("===================支付订单未通知定时任务===================")
         List<DebitCardOrder> unCompleteOrderList = reaPalService.getDebitCardOrderUnComplete()
         if (CollectionUtils.isNotEmpty(unCompleteOrderList)) {
             for (DebitCardOrder debitCardOrder : unCompleteOrderList) {
-                log.info("===================>超过5分钟未回调的订单号{}",debitCardOrder.order_no)
                 reaPalService.confirmPaySearch(debitCardOrder.order_no)
             }
         }

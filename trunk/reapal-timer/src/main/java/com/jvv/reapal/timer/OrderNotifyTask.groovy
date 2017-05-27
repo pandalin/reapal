@@ -25,21 +25,22 @@ import javax.annotation.Resource
 @Slf4j
 class OrderNotifyTask {
 
-    @Resource
-    private ReaPalService reaPalService
+    @Resource private NotifyService notifyService
+
+    @Resource private ReaPalService reaPalService
 
 //    @PostConstruct
     def init() {
         notifyOrder()
     }
 
-    @Scheduled(cron = "0 0/1 * * * ?")
+    @Scheduled(cron = "0 0/3 * * * ?")
     def notifyOrder() {
+        log.info("===================通知PHP订单定时任务===================")
         List<DebitCardOrder> unNotifyList = reaPalService.getDebitCardOrderUnNotifyed()
         if (CollectionUtils.isNotEmpty(unNotifyList)) {
             for (DebitCardOrder debitCardOrder : unNotifyList) {
-                log.info("===================>未通知的订单号{}",debitCardOrder.order_no)
-                reaPalService.notify(debitCardOrder)
+                notifyService.notifyOrder(debitCardOrder)
             }
         }
     }
