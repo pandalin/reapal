@@ -39,7 +39,7 @@ class BatchToPayNotifyTask {
     @Resource
     private BatchToPayService batchToPayService
 
-    @Scheduled(cron = "0 0/1 * * * ?")
+    @Scheduled(cron = "0 0 12/23 * * ?")
     def batchToPayNotify() {
         log.info("===================通知长青定时任务开始执行===================")
         List<BatchToPayDetail> unNotifyList = batchToPayDetailDao.findBatchToPayDetailUnNotify()

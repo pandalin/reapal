@@ -7,6 +7,7 @@ import org.springframework.scheduling.annotation.AsyncConfigurer
 import org.springframework.scheduling.annotation.EnableAsync
 import org.springframework.scheduling.annotation.EnableScheduling
 import org.springframework.scheduling.annotation.SchedulingConfigurer
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler
 import org.springframework.scheduling.config.ScheduledTaskRegistrar
 
@@ -26,13 +27,13 @@ import java.util.concurrent.ThreadPoolExecutor
 @Configuration
 @EnableAsync
 @EnableScheduling
-class ReaPalTaskExecutor implements AsyncConfigurer,SchedulingConfigurer{
+class ReaPalExecutor implements AsyncConfigurer,SchedulingConfigurer{
 
     @Bean
     ThreadPoolTaskScheduler taskScheduler(){
         ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler()
         scheduler.poolSize = 20
-        scheduler.threadNamePrefix = "task-"
+        scheduler.threadNamePrefix = 'reapal-task-'
         scheduler.awaitTerminationSeconds = 60
         scheduler.waitForTasksToCompleteOnShutdown = Boolean.TRUE
         scheduler.rejectedExecutionHandler = new ThreadPoolExecutor.CallerRunsPolicy()
@@ -40,9 +41,20 @@ class ReaPalTaskExecutor implements AsyncConfigurer,SchedulingConfigurer{
         return scheduler
     }
 
+    @Bean
+    Executor threadPoolTaskExecutor(){
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor()
+        executor.corePoolSize = 10
+        executor.maxPoolSize = 20
+        executor.queueCapacity = 10
+        executor.threadNamePrefix = 'reapal-executor-'
+        executor.initialize()
+        return executor
+    }
+
     @Override
     Executor getAsyncExecutor() {
-        return this.taskScheduler()
+        return this.threadPoolTaskExecutor()
     }
 
     @Override
