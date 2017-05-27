@@ -1,5 +1,6 @@
 package com.jvv.reapal.common.utils
 
+import com.jvv.reapal.facade.result.CommonResultCode
 import groovyx.net.http.ContentType
 import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.Method
@@ -27,8 +28,8 @@ class HttpBuilder {
             response.success = { resp, reader ->
                 return reader.text
             }
-            response.'404' = {
-                println 'Not found'
+            response.failure = { resp ->
+                throw new RuntimeException(CommonResultCode.NET_EXCEPRION.message)
             }
         }
     }
@@ -40,6 +41,9 @@ class HttpBuilder {
             body = jsonStr
             response.success = { resp, json ->
                 return json
+            }
+            response.failure = { resp ->
+                throw new RuntimeException(CommonResultCode.NET_EXCEPRION.message)
             }
         }
     }

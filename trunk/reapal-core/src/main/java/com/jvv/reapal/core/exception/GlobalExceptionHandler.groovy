@@ -31,25 +31,28 @@ class GlobalExceptionHandler {
 
         SimpleResult result = new SimpleResult()
         if (exception instanceof SignException) {
-            log.error("签名异常",exception)
-            result.setToFail(CommonResultCode.ILLEGAL_ARGUMENT_EXCEPTION,"签名异常")
+            log.error("签名异常", exception)
+            result.setToFail(CommonResultCode.ILLEGAL_ARGUMENT_EXCEPTION, "签名异常")
         } else if (exception instanceof IllegalArgumentException) {
-            log.error("参数异常",exception)
-            result.setToFail(CommonResultCode.ILLEGAL_ARGUMENT_EXCEPTION,exception.message)
-        } else if (exception.cause instanceof HibernateException){
-            log.error("数据库错误",exception)
-            result.setToFail(CommonResultCode.DB_EXCEPRION,CommonResultCode.DB_EXCEPRION.message)
+            log.error("参数异常", exception)
+            result.setToFail(CommonResultCode.ILLEGAL_ARGUMENT_EXCEPTION, exception.message)
+        } else if (exception.cause instanceof HibernateException) {
+            log.error("数据库错误", exception)
+            result.setToFail(CommonResultCode.DB_EXCEPRION, CommonResultCode.DB_EXCEPRION.message)
+        } else if (exception instanceof NullPointerException) {
+            log.error("空指针异常", exception)
+            result.setToFail(CommonResultCode.SYS_EXCEPRION, CommonResultCode.SYS_EXCEPRION.message)
         } else if (exception instanceof RuntimeException) {
-            log.error("业务错误",exception)
-            result.setToFail(CommonResultCode.BIZ_EXCEPRION,exception.message)
+            log.error("业务错误", exception)
+            result.setToFail(CommonResultCode.BIZ_EXCEPRION, exception.message)
         } else if (exception instanceof NoHandlerFoundException) {
-            log.error("非法请求",exception)
-            result.setToFail(CommonResultCode.UNKNOWN_EXCEPRION,CommonResultCode.UNKNOWN_EXCEPRION.message)
+            log.error("非法请求", exception)
+            result.setToFail(CommonResultCode.UNKNOWN_EXCEPRION, CommonResultCode.UNKNOWN_EXCEPRION.message)
         } else {
-            log.error("系统异常",exception)
-            result.setToFail(CommonResultCode.SYS_EXCEPRION,exception.message)
+            log.error("系统异常", exception)
+            result.setToFail(CommonResultCode.SYS_EXCEPRION, exception.message)
         }
 
-        return new ResponseEntity<SimpleResult>(result,HttpStatus.OK)
+        return new ResponseEntity<SimpleResult>(result, HttpStatus.OK)
     }
 }
