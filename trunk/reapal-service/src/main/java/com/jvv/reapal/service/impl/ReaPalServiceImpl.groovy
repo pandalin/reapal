@@ -241,7 +241,7 @@ class ReaPalServiceImpl implements ReaPalService {
     BizResult<DebitCardInfo> bindCard(DebitCardDTO debitCardDTO) {
         BizResult<DebitCardInfo> result = new BizResult<DebitCardInfo>()
 
-        DebitCard userDebitCard = debitCardDao.findDebitCardByCardNoAndMemberId(debitCardDTO.card_no,debitCardDTO.member_id)
+        DebitCard userDebitCard = debitCardDao.findBindedDebitCardByMemberId(debitCardDTO.member_id)
         if (userDebitCard == null) {
             JwwUserResp jwwUserResp = debitCardClient.getJwwUserByCertNo(debitCardDTO.cert_no,debitCardDTO.member_id,JwwUserResp.class)
             if (jwwUserResp.success()) {
@@ -263,10 +263,16 @@ class ReaPalServiceImpl implements ReaPalService {
             DebitCardResp debitCardResp = debitCardClient.bindCard(debitCardDTO)
             if (debitCardResp.success()) {
 
+                reaPalUserDao.deleteReaPalUser(debitCardDTO.member_id)
+
                 ReaPalUser reaPalUser = new ReaPalUser()
                 InvokerHelper.setProperties(reaPalUser,debitCardDTO.properties)
                 reaPalUserDao.saveAndFlush(reaPalUser)
 
+                DebitCard debitCard1 = debitCardDao.findDebitCardByCardNoAndMemberId(debitCardDTO.card_no,debitCardDTO.member_id)
+                if (debitCard1 != null) {
+                    debitCardDao.delete(debitCard1.id)
+                }
                 DebitCard debitCard = new DebitCard()
                 InvokerHelper.setProperties(debitCard,debitCardDTO.properties)
                 InvokerHelper.setProperties(debitCard,debitCardResp.properties)
