@@ -95,6 +95,7 @@ class ReaPalServiceImpl implements ReaPalService {
     }
 
     @Override
+    @Transactional
     SimpleResult unBindCard(String bank_id,String member_id) {
         SimpleResult result = new SimpleResult()
 
@@ -102,7 +103,9 @@ class ReaPalServiceImpl implements ReaPalService {
         Assert.notNull(debitCard,"无效的银行卡")
         UnBindCardResp unBindCardResp = debitCardClient.unBindCard(debitCard.bind_id,member_id)
         if (unBindCardResp.success()) {
+            reaPalUserDao.deleteReaPalUser(debitCard.member_id)
             debitCardDao.delete(debitCard.id)
+
             result.setToSuccess()
         } else {
             result.setToFail(CommonResultCode.BIZ_EXCEPRION, unBindCardResp.result_msg)

@@ -39,19 +39,19 @@ class ReaPalTest {
 
     @Test
     void bindCard() {
-        params.put("card_no","6227003761320048165")
-        params.put("owner","陈圣林")
-        params.put("cert_no","500234198412231155")
-        params.put("phone","18716201367")
+        params.put("card_no","6214242710498301")
+        params.put("owner","韩梅梅")
+        params.put("cert_no","210302196001012114")
+        params.put("phone","13220482188")
         params.put("total_fee","100")
         params.put("title","手机")
         params.put("body","华为手机")
-        params.put("member_id","afe2dda6-39eb-11e7-8393-6c92bf3160a3")
+        params.put("member_id","12345")
         params.put("bank_card_type","0")
 //        params.put("cvv2","521")
 //        params.put("validthru","0420")
         params.put("terminal_type","mobile")
-        params.put("bg_ret_url","http://192.168.1.207:9898/notify/test")
+        params.put("bg_ret_url","http://192.168.1.207:88/notify/test")
         params.put("order_no",DateFormatUtils.format(DateTime.now().toDate(),"yyyyMMddSSS") + RandomStringUtils.randomNumeric(9))
 //        params.put("order_no","CQ591add06b58e20-64483030")
         get("/reapal/debitCardSign")
@@ -69,7 +69,7 @@ class ReaPalTest {
 
     @Test
     void getBindCard() {
-        String memberId = "afe2dda6-39eb-11e7-8393-6c92bf3160a3"
+        String memberId = "12345"
         params.put("member_id",memberId)
         get("/reapal/getBindCard")
     }
@@ -85,8 +85,8 @@ class ReaPalTest {
 
     @Test
     void unbindCard() {
-        String bank_id
-        String memberId
+        String bank_id = '9'
+        String memberId = '12345'
         params.put("bank_id",bank_id)
         params.put("member_id",memberId)
         get("/reapal/unBindCard")
