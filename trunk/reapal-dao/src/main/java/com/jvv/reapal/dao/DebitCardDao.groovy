@@ -25,4 +25,6 @@ interface DebitCardDao extends JpaRepository<DebitCard,Integer> {
     DebitCard findMemberDebitCardByBindId(@Param("bind_id")String bind_id,@Param("member_id")String member_id)
     @Query("from DebitCard rdc where rdc.member_id = :member_id")
     DebitCard findDebitCardByMemberId(@Param("member_id")String member_id)
+    @Query("from DebitCard rdc where rdc.member_id = :member_id and rdc.card_status=1")
+    DebitCard findBindedDebitCardByMemberId(@Param("member_id")String member_id)
 }

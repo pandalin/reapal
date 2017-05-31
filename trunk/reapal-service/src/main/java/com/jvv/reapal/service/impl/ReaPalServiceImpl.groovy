@@ -117,7 +117,7 @@ class ReaPalServiceImpl implements ReaPalService {
     @Override
     BizResult<BankCardInfo> getBindCard(String member_id) {
         BizResult<BankCardInfo> result = new BizResult<BankCardInfo>()
-        DebitCard debitCard = debitCardDao.findDebitCardByMemberId(member_id)
+        DebitCard debitCard = debitCardDao.findBindedDebitCardByMemberId(member_id)
         Assert.notNull(debitCard,"未绑定银行卡")
 
         BankCardInfo bankCardInfo = new BankCardInfo()
@@ -155,6 +155,7 @@ class ReaPalServiceImpl implements ReaPalService {
     }
 
     @Override
+    @Transactional
     SimpleResult confirmPayNotify(ConfirmPayNotifyDTO confirmPayNotifyDTO) {
         SimpleResult result = new SimpleResult()
         String decryData = confirmPayClient.decryptData(confirmPayNotifyDTO.encryptkey,confirmPayNotifyDTO.data)
@@ -169,6 +170,10 @@ class ReaPalServiceImpl implements ReaPalService {
                 debitCardOrder.order_status = OrderStatus.failed.status
             }
             updateDebitOrder(debitCardOrder)
+            DebitCard debitCard = debitCardDao.findDebitCardByMemberId(debitCardOrder.member_id)
+            debitCard.card_status = 1
+            debitCardDao.saveAndFlush(debitCard)
+
             notify(debitCardOrder)
         }
         result.setToSuccess()
@@ -205,7 +210,7 @@ class ReaPalServiceImpl implements ReaPalService {
     BizResult<DebitCardInfo> payContract(DebitCardDTO debitCardDTO) {
         BizResult<DebitCardInfo> result = new BizResult<DebitCardInfo>()
 
-        DebitCard debitCard = debitCardDao.findDebitCardByMemberId(debitCardDTO.getMember_id())
+        DebitCard debitCard = debitCardDao.findBindedDebitCardByMemberId(debitCardDTO.getMember_id())
         if (debitCard == null) {
             result.setToFail(CommonResultCode.UNBINDCARD_EXCEPTION,CommonResultCode.UNBINDCARD_EXCEPTION.message)
             return result
@@ -265,6 +270,7 @@ class ReaPalServiceImpl implements ReaPalService {
                 DebitCard debitCard = new DebitCard()
                 InvokerHelper.setProperties(debitCard,debitCardDTO.properties)
                 InvokerHelper.setProperties(debitCard,debitCardResp.properties)
+                debitCard.card_status = 0
                 saveDebitCard(debitCard)
 
                 saveDebitCardOrder(debitCardDTO,debitCard.bind_id)

@@ -44,4 +44,6 @@ class DebitCard implements Serializable{
     String cvv2//信用卡背后的3位数字
     @Column(name = "validthru",length = 10)
     String validthru//信用卡有效期
+    @Column(name = "card_status",length = 5)
+    int card_status
 }
