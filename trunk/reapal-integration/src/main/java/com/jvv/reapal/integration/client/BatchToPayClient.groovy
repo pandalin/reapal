@@ -27,12 +27,12 @@ class BatchToPayClient extends AbstractClient{
         batchToPayDTO.trans_time = DateUtils.currentStr()
         batchToPayDTO.notify_url = getNotifyUrl() + URL_TOPAY_NOTIFY
         batchToPayDTO.batch_no = StringUtils.getUUId()
-        BatchToPayResp batchPayResp = super.batchToPay(batchToPayDTO,BatchToPayResp.class)
+        BatchToPayResp batchPayResp = super.batchToPay(URL_BATCHTOPAY,batchToPayDTO,BatchToPayResp.class)
         return batchPayResp
     }
 
     BatchToPaySearchResp batchToPaySearch(BatchToPaySearchDTO batchToPaySearchDTO) {
-        BatchToPaySearchResp batchToPaySearchResp = super.batchToPay(batchToPaySearchDTO,BatchToPaySearchResp.class)
+        BatchToPaySearchResp batchToPaySearchResp = super.batchToPay(URL_SINGLEPAYQUERY,batchToPaySearchDTO,BatchToPaySearchResp.class)
         return batchToPaySearchResp
     }
 

@@ -85,7 +85,7 @@ class ReaPalTest {
 
     @Test
     void unbindCard() {
-        String bank_id = '9'
+        String bank_id = '11'
         String memberId = '12345'
         params.put("bank_id",bank_id)
         params.put("member_id",memberId)

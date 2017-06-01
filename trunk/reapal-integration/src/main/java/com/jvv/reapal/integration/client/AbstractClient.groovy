@@ -62,7 +62,8 @@ abstract class AbstractClient {
     protected static final String URL_UPDATE_JWW_USER_REALNAME = "/m/updateUserRealNameState"
 
 
-    protected static final String URL_BATCHTOPAY = "/agentpay/pay"
+    protected static final String URL_BATCHTOPAY = "/pay"
+    protected static final String URL_SINGLEPAYQUERY = "/singlepayquery"
     protected static final String URL_TOPAY_NOTIFY = "/notify/batchToPay"
 
     String getSeller_email() {
@@ -77,7 +78,7 @@ abstract class AbstractClient {
         return merchantId
     }
 
-    public <T> T batchToPay(AbstractDTO abstractDTO, Class<T> respClass) {
+    public <T> T batchToPay(String url,AbstractDTO abstractDTO, Class<T> respClass) {
 
         Map<String, String> requestMap = BeanUtils.describe(abstractDTO)
         requestMap.remove("class")
@@ -91,8 +92,10 @@ abstract class AbstractClient {
         Map<String, String> maps = Decipher.encryptData(json, pubKeyUrl)
         maps.put("merchant_id",merchantId)
         maps.put("version",version)
-        String returnStr = post(toPayUrl + URL_BATCHTOPAY, maps)
+        String returnStr = post(toPayUrl + url, maps)
+        log.info("===================>批量代付返回returnStr={}",returnStr)
         String data = Decipher.decryptData(returnStr, privateKey, privateKeyPwd)
+        log.info("===================>批量代付解密data={}",data)
         return JSON.parseObject(data, respClass)
     }
 
