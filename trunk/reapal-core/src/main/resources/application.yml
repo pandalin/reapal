@@ -3,3 +3,8 @@ server:
 spring:
   profiles:
     active: dev
+logging:
+  level:
+    org:
+      hibernate: ERROR
+      springframework: ERROR
