@@ -118,8 +118,10 @@ class ReaPalServiceImpl implements ReaPalService {
     BizResult<BankCardInfo> getBindCard(String member_id) {
         BizResult<BankCardInfo> result = new BizResult<BankCardInfo>()
         DebitCard debitCard = debitCardDao.findBindedDebitCardByMemberId(member_id)
-        Assert.notNull(debitCard,"未绑定银行卡")
-
+        if (debitCard == null) {
+            result.setToFail(CommonResultCode.BIZ_EXCEPRION,"未绑定银行卡")
+            return result
+        }
         BankCardInfo bankCardInfo = new BankCardInfo()
         InvokerHelper.setProperties(bankCardInfo,debitCard.properties)
         bankCardInfo.card_no = StringUtils.hideCardNo(bankCardInfo.card_no)
