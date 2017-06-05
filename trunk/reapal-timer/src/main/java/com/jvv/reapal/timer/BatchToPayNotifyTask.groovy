@@ -42,7 +42,7 @@ class BatchToPayNotifyTask {
     /**
      * 每6小时执行1次
      */
-    @Scheduled(cron = "0 0 */6 * * ?")
+    @Scheduled(cron = "0 0/10 * * * ?")
     def batchToPayNotify() {
         log.info("===================通知长青定时任务开始执行===================")
         List<BatchToPayDetail> unNotifyList = batchToPayDetailDao.findBatchToPayDetailUnNotify()

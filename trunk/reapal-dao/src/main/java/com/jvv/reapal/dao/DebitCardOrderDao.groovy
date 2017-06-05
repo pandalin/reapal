@@ -27,6 +27,6 @@ interface DebitCardOrderDao extends JpaRepository<DebitCardOrder,Integer>{
     List<DebitCardOrder> getDebitCardOrderUnNotifyed()
     @Query("from DebitCardOrder do where do.order_no = :orderNo")
     DebitCardOrder getDebitCardOrderByOrderNo(@Param("orderNo") String orderNo)
-    @Query(value = "select * from reapal_debitcard_order do where do.order_status='processing' AND do.transtime > date_format(DATE_ADD(do.transtime,INTERVAL 5 MINUTE),'%Y-%m-%d %h:%i:%s') AND do.transtime < date_format(DATE_ADD(do.transtime,INTERVAL 1 DAY),'%Y-%m-%d %h:%i:%s')",nativeQuery = true)
+    @Query(value = "select * from reapal_debitcard_order do where do.order_status='processing' AND now() > date_format(DATE_ADD(do.transtime,INTERVAL 5 MINUTE),'%Y-%m-%d %h:%i:%s') AND now() < date_format(DATE_ADD(do.transtime,INTERVAL 1 DAY),'%Y-%m-%d %h:%i:%s')",nativeQuery = true)
     List<DebitCardOrder> getDebitCardOrderUnComplete()
 }
