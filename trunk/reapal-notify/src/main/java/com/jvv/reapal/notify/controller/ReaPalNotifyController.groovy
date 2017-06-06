@@ -1,6 +1,5 @@
 package com.jvv.reapal.notify.controller
 
-import com.alibaba.fastjson.JSON
 import com.google.common.collect.Maps
 import com.jvv.reapal.facade.api.ReaPalFacadeApi
 import com.jvv.reapal.facade.enums.Status
@@ -39,7 +38,6 @@ class ReaPalNotifyController {
 
     @RequestMapping("/notify/batchToPay")
     String batchToPay(ReaPalNotifyReq payNotifyReq) {
-        log.info("===================>批量提现融宝回调数据结果:{}",JSON.toJSONString(payNotifyReq))
         SimpleResult result = reaPalFacadeApi.batchToPayNotify(payNotifyReq)
         return result.status.code
     }
