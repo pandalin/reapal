@@ -19,8 +19,8 @@ import org.springframework.stereotype.Repository
 @Repository
 interface DebitCardDao extends JpaRepository<DebitCard,Integer> {
 
-    @Query("from DebitCard rdc where rdc.card_no = :card_no and rdc.member_id = :member_id")
-    DebitCard findDebitCardByCardNoAndMemberId(@Param("card_no")String card_no,@Param("member_id") String member_id)
+    @Query("from DebitCard rdc where rdc.card_status=0 and rdc.member_id = :member_id")
+    DebitCard findNoDebitCardByCardByMemberId(@Param("member_id") String member_id)
     @Query("from DebitCard rdc where rdc.bind_id = :bind_id AND rdc.member_id = :member_id")
     DebitCard findMemberDebitCardByBindId(@Param("bind_id")String bind_id,@Param("member_id")String member_id)
     @Query("from DebitCard rdc where rdc.member_id = :member_id")
