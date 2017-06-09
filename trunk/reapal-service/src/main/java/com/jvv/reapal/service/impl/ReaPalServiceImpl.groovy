@@ -70,7 +70,11 @@ class ReaPalServiceImpl implements ReaPalService {
     @Override
     @Transactional
     DebitCardOrder saveDebitCardOrder(DebitCardOrder debitCardOrder) {
-        return debitCardOrderDao.saveAndFlush(debitCardOrder)
+        try {
+            return debitCardOrderDao.saveAndFlush(debitCardOrder)
+        } catch(Exception e) {
+            throw new RuntimeException("重复的订单请求")
+        }
     }
 
     @Transactional
