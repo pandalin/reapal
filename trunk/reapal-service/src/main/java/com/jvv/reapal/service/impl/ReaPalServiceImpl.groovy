@@ -275,10 +275,8 @@ class ReaPalServiceImpl implements ReaPalService {
                 InvokerHelper.setProperties(reaPalUser,debitCardDTO.properties)
                 reaPalUserDao.saveAndFlush(reaPalUser)
 
-                DebitCard debitCard1 = debitCardDao.findNoDebitCardByCardByMemberId(debitCardDTO.member_id)
-                if (debitCard1 != null) {
-                    debitCardDao.delete(debitCard1.id)
-                }
+                debitCardDao.deleteDebitCardByMemberId(debitCardDTO.member_id)
+
                 DebitCard debitCard = new DebitCard()
                 InvokerHelper.setProperties(debitCard,debitCardDTO.properties)
                 InvokerHelper.setProperties(debitCard,debitCardResp.properties)
