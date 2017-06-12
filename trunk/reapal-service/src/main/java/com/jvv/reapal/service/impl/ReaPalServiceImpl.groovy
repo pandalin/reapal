@@ -166,14 +166,16 @@ class ReaPalServiceImpl implements ReaPalService {
         SimpleResult result = new SimpleResult()
         String decryData = confirmPayClient.decryptData(confirmPayNotifyDTO.encryptkey,confirmPayNotifyDTO.data)
         ConfirmPayResp confirmPayResp = JSON.parseObject(decryData,ConfirmPayResp.class)
-        DebitCardOrder debitCardOrder = debitCardOrderDao.getDebitCardOrderByOrderNoAndTradeNo(confirmPayResp.order_no,confirmPayResp.trade_no)
+        DebitCardOrder debitCardOrder = debitCardOrderDao.getDebitCardOrderByOrderNo(confirmPayResp.order_no)
         if (debitCardOrder != null) {
             debitCardOrder.close_date_time = confirmPayResp.close_date_time
             debitCardOrder.timestamp = confirmPayResp.timestamp
+            debitCardOrder.trade_no = confirmPayResp.trade_no
             if ("TRADE_FINISHED".equals(confirmPayResp.status)) {
                 debitCardOrder.order_status = OrderStatus.completed.status
             } else {
                 debitCardOrder.order_status = OrderStatus.failed.status
+                debitCardOrder.fail_reason = confirmPayResp.result_msg
             }
             updateDebitOrder(debitCardOrder)
             DebitCard debitCard = debitCardDao.findDebitCardByMemberId(debitCardOrder.member_id)
@@ -201,14 +203,14 @@ class ReaPalServiceImpl implements ReaPalService {
         }
         ConfirmPayResp confirmPayResp = confirmPayClient.confirmPay(confirmPayDTO)
         //接收成功
-        if ("3083".equals(confirmPayResp.result_code) || confirmPayResp.success()) {
+        if (confirmPayResp.success() || "3083".equals(confirmPayResp.result_code)) {
             debitCardOrder.trade_no = confirmPayResp.trade_no
-            debitCardOrder.order_status = OrderStatus.processing.status
-            updateDebitOrder(debitCardOrder)
             result.setToSuccess()
         } else {
             result.setToFail(CommonResultCode.BIZ_EXCEPRION,confirmPayResp.result_msg)
         }
+        debitCardOrder.order_status = OrderStatus.processing.status
+        updateDebitOrder(debitCardOrder)
         return result
     }
 

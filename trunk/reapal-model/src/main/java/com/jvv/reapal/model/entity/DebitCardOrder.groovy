@@ -59,4 +59,6 @@ class DebitCardOrder implements Serializable{
     String bg_ret_url
     @Column(name = "notify_status",length = 1)
     String notify_status//0-未通知,1-已通知
+    @Column(name = "fail_reason",length = 500)
+    String fail_reason
 }

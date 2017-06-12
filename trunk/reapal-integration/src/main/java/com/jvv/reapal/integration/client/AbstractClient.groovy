@@ -116,6 +116,7 @@ abstract class AbstractClient {
         maps.put("merchant_id",merchantId)
         String returnStr = post(payUrl + url, maps)
         String data = Decipher.decryptData(returnStr, privateKey, privateKeyPwd)
+        log.info("===================>融宝支付返回数据,{}",data)
         return JSON.parseObject(data, respClass)
     }
 
