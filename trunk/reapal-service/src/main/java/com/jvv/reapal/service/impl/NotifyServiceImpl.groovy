@@ -60,7 +60,7 @@ class NotifyServiceImpl implements NotifyService{
     def notifyJwwUserRealNameState(String userId, String realName, String cert_no) {
         Map<String,String> requestMap = Maps.newHashMap()
         requestMap.put("userId",userId)
-        requestMap.put("realName",realName)
+        requestMap.put("realName",URLEncoder.encode(realName,"UTF-8"))
         requestMap.put("cert_no",cert_no)
         debitCardClient.postToJww(requestMap)
     }
