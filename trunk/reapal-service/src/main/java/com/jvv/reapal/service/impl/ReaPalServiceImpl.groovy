@@ -205,11 +205,13 @@ class ReaPalServiceImpl implements ReaPalService {
         //接收成功
         if (confirmPayResp.success() || "3083".equals(confirmPayResp.result_code)) {
             debitCardOrder.trade_no = confirmPayResp.trade_no
+            debitCardOrder.order_status = OrderStatus.processing.status
             result.setToSuccess()
         } else {
+            debitCardOrder.order_status = OrderStatus.failed.status
+            debitCardOrder.fail_reason = confirmPayResp.result_msg
             result.setToFail(CommonResultCode.BIZ_EXCEPRION,confirmPayResp.result_msg)
         }
-        debitCardOrder.order_status = OrderStatus.processing.status
         updateDebitOrder(debitCardOrder)
         return result
     }
