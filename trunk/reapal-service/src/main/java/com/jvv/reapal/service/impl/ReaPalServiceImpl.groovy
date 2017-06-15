@@ -173,6 +173,7 @@ class ReaPalServiceImpl implements ReaPalService {
             debitCardOrder.trade_no = confirmPayResp.trade_no
             if ("TRADE_FINISHED".equals(confirmPayResp.status)) {
                 debitCardOrder.order_status = OrderStatus.completed.status
+                debitCardOrder.fail_reason = ''
             } else {
                 debitCardOrder.order_status = OrderStatus.failed.status
                 debitCardOrder.fail_reason = confirmPayResp.result_msg
@@ -203,7 +204,7 @@ class ReaPalServiceImpl implements ReaPalService {
         }
         ConfirmPayResp confirmPayResp = confirmPayClient.confirmPay(confirmPayDTO)
         //接收成功
-        if (confirmPayResp.success() || "3083".equals(confirmPayResp.result_code)) {
+        if (confirmPayResp.success() || "3083".equals(confirmPayResp.result_code) || "3081".equals(confirmPayResp.result_code)) {
             debitCardOrder.trade_no = confirmPayResp.trade_no
             debitCardOrder.order_status = OrderStatus.processing.status
             result.setToSuccess()
