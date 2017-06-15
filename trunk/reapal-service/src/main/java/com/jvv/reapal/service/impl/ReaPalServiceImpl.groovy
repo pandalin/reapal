@@ -204,7 +204,9 @@ class ReaPalServiceImpl implements ReaPalService {
         }
         ConfirmPayResp confirmPayResp = confirmPayClient.confirmPay(confirmPayDTO)
         //接收成功
-        if (confirmPayResp.success() || "3083".equals(confirmPayResp.result_code) || "3081".equals(confirmPayResp.result_code)) {
+        if ("3069".equals(confirmPayResp.result_code || "3074".equals(confirmPayResp.result_code))) {
+            result.setToFail(CommonResultCode.BIZ_EXCEPRION,confirmPayResp.result_msg)
+        } else  if (confirmPayResp.success() || "3083".equals(confirmPayResp.result_code) || "3081".equals(confirmPayResp.result_code)) {
             debitCardOrder.trade_no = confirmPayResp.trade_no
             debitCardOrder.order_status = OrderStatus.processing.status
             result.setToSuccess()
