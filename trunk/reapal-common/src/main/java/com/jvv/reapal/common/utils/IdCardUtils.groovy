@@ -2,7 +2,11 @@ package com.jvv.reapal.common.utils
 
 import org.apache.commons.lang3.time.DateFormatUtils
 import org.joda.time.DateTime
+import org.joda.time.LocalDateTime
+import org.joda.time.LocalTime
 import org.joda.time.format.DateTimeFormat
+import org.joda.time.format.DateTimeFormatter
+import org.joda.time.format.DateTimeFormatterBuilder
 import org.springframework.util.Assert
 
 /**
@@ -17,7 +21,7 @@ import org.springframework.util.Assert
  */
 class IdCardUtils {
 
-    static DateTime getBirthDay(String idCard) {
+    static LocalDateTime getBirthDay(String idCard) {
         Assert.notNull(idCard,"身份证不能为空")
         int length = idCard.length()
         String birthDay
@@ -26,7 +30,7 @@ class IdCardUtils {
         } else {
             birthDay = idCard.substring(6,14)
         }
-        DateTime dateTime = DateTimeFormat.forPattern("yyyyMMdd").parseDateTime(birthDay)
+        LocalDateTime dateTime = DateTimeFormat.forPattern("yyyyMMdd").parseLocalDateTime(birthDay)
         return dateTime
     }
 
