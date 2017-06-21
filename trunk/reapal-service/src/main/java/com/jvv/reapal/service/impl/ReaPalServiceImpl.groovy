@@ -174,14 +174,14 @@ class ReaPalServiceImpl implements ReaPalService {
             if ("TRADE_FINISHED".equals(confirmPayResp.status)) {
                 debitCardOrder.order_status = OrderStatus.completed.status
                 debitCardOrder.fail_reason = ''
+                DebitCard debitCard = debitCardDao.findDebitCardByMemberId(debitCardOrder.member_id)
+                debitCard.card_status = 1
+                debitCardDao.saveAndFlush(debitCard)
             } else {
                 debitCardOrder.order_status = OrderStatus.failed.status
                 debitCardOrder.fail_reason = confirmPayResp.result_msg
             }
             updateDebitOrder(debitCardOrder)
-            DebitCard debitCard = debitCardDao.findDebitCardByMemberId(debitCardOrder.member_id)
-            debitCard.card_status = 1
-            debitCardDao.saveAndFlush(debitCard)
 
             notify(debitCardOrder)
         }
