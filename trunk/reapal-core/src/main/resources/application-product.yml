@@ -1,9 +1,9 @@
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:mysql://cqck2017.mysql.rds.aliyuncs.com:3306/cqshop_db
-    username: cqshop_web
-    password: Jinvovo2015
+    url: jdbc:mysql://:3306/
+    username: 
+    password: 
     driver-class-name: com.mysql.jdbc.Driver
   jpa:
     database: mysql
@@ -25,13 +25,13 @@ reapal:
   version: 1.0
   pay-url: http://api.reapal.com
   topay-url: https://agentpay.reapal.com/agentpay
-  merchantId: 100000001301356
-  appKey: 2a8e9cab468abe859f8c1adfd1b63a2dcdcd05b3152a50g0a37e323b97df7835
-  seller_email: 893448785@qq.com
+  merchantId: 
+  appKey: 
+  seller_email: 
   pubKeyUrl: /data/cert/rongbao.cer
   privateKey: /data/cert/100000001301356.pfx
-  privateKeyPwd: jinvv6
+  privateKeyPwd: 
 notify:
-  url: http://118.178.151.253:88
+  url: 
 jww:
-  url: http://i.jinvovo.com
+  url: 
