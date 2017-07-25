@@ -25,16 +25,16 @@ reapal:
   version: 1.0
   pay-url: http://testapi.reapal.com
   topay-url: http://testagentpay.reapal.com/agentpay/agentpay
-  merchantId: 100000000000147
-  appKey: g0be2385657fa355af68b74e9913a1320af82gb7ae5f580g79bffd04a402ba8f
+  merchantId: 
+  appKey: 
   seller_email: 850138237@qq.com
   pubKeyUrl: /data/cert/rongbao_test.cer
   privateKey: /data/cert/rongbao_test.pfx
-  privateKeyPwd: 123456
+  privateKeyPwd: 
 notify:
-  url: http://114.55.69.217:7776
+  url: 
 jww:
-  url: http://192.168.1.8:9999
+  url: 
 
 
 
